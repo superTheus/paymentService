@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import stone.utils.Stone;
+import stone.application.StoneStart;
+
 public class MyAppPackage implements ReactPackage {
 
     @Override
@@ -19,7 +22,8 @@ public class MyAppPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-
+        StoneStart.init(reactContext);
+        Stone.setAppName("Payment Service");
         modules.add(new StoneClass(reactContext));
 
         return modules;

@@ -79,8 +79,6 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
 
     @ReactMethod
     public void getPrint(String text) {
-        String values = "Teste: "+text;
-        Toast.makeText(reactContext, "Toast: " + values, Toast.LENGTH_SHORT).show();
         try{
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override

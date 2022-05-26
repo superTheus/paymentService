@@ -1,9 +1,9 @@
 import {NativeModules} from 'react-native';
 
-var stonnePrint = NativeModules.PrintClass;
+var stonnePrint = NativeModules.StoneClass;
 
 export default class StonneService {
-  async sendPrint(text) {
-    await stonnePrint.getPrint(text);
+  sendPrint(text) {
+    stonnePrint.getPrint(text);
   }
 }
