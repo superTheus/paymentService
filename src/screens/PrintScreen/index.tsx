@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-
-import StonneService from '../../services/service_stone';
-
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import styled from 'styled-components/native';
 
+import StonneService from '../../services/service_stone';
+import colors from '../../utils/colors';
+import { StackParamList } from '../../routes/types';
+import { useNavigation } from '@react-navigation/native';
+
+type navigateProps = NativeStackNavigationProp<StackParamList, 'TransactionScreen'>;
+
 export default function PrintScreen() {
+  const navigation = useNavigation<navigateProps>();
   var serviceStonne = new StonneService();
 
   const [valueText, setValueText] = useState('Teste ');
@@ -42,6 +48,10 @@ export default function PrintScreen() {
       <ButtonPrint onPress={printReport}>
         <Text style={{ color: '#fff' }}> IMPRIMIR RELATÓRIO EXEMPLO</Text>
       </ButtonPrint>
+
+      <ButtonBack onPress={() => navigation.goBack()}>
+        <Text style={{ color: colors.gray }}> VOLTAR </Text>
+      </ButtonBack>
     </Container>
   );
 }
@@ -68,8 +78,13 @@ const ButtonPrint = styled.TouchableOpacity`
   font-size: 14px;
   justify-content: center;
   align-items: center;
-  background-color: #26387d;
+  background-color: ${colors.purple};
   color: #fff;
   border-radius: 5px;
   padding: 0px 20px;
+`;
+
+const ButtonBack = styled(ButtonPrint)`
+  background-color: ${colors.whiteBackground};
+  border: 1px solid ${colors.purple}
 `;

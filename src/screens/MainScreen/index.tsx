@@ -6,6 +6,7 @@ import { StackParamList } from "../../routes/types";
 import styled from "styled-components/native";
 
 import StonneService from '../../services/service_stone';
+import colors from "../../utils/colors";
 
 type navigateProps = NativeStackNavigationProp<StackParamList, 'MainScreen'>;
 
@@ -22,7 +23,7 @@ export default function MainScreen() {
       <ButtonPrimary onPress={() => navigation.navigate('PrintScreen')}>
         <Text style={{ color: '#fff' }}> IMPRESSÃO</Text>
       </ButtonPrimary>
-      <ButtonPrimary>
+      <ButtonPrimary onPress={() => navigation.navigate('TransactionScreen')} >
         <Text style={{ color: '#fff' }}> TRANSAÇÃO </Text>
       </ButtonPrimary>
     </Container >
@@ -42,7 +43,7 @@ const ButtonPrimary = styled.TouchableOpacity`
   font-size: 14px;
   justify-content: center;
   align-items: center;
-  background-color: #26387d;
+  background-color: ${colors.purple};
   color: #fff;
   border-radius: 5px;
   padding: 0px 20px;
