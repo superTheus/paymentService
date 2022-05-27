@@ -6,6 +6,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -78,14 +79,43 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
     public void onNewIntent(Intent intent){}
 
     @ReactMethod
-    public void getPrint(String text) {
+    public void handlePrintSimple(String text) {
         try{
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    String retorno = Print.printText(reactContext, text);
-                    Toast.makeText(reactContext, "Retorno: " + retorno, Toast.LENGTH_SHORT).show();
+                    Print.printTextSimple(reactContext, text);
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(reactContext, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @ReactMethod
+    public void handlePrintMultiline(ReadableArray text) {
+        try{
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final StoneFunctions Print = new StoneFunctions();
+                    Print.printTextMultline(reactContext, text);
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(reactContext, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @ReactMethod
+    public void handleValidateCard() {
+        try{
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final StoneFunctions Print = new StoneFunctions();
+                    Print.validateCard(reactContext);
                 }
             });
         }catch (Exception e){
