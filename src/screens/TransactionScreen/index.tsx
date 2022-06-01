@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import { StackParamList } from '../../routes/types';
 import colors from '../../utils/colors';
 
+import StonneService from '../../services/service_stone';
+
 interface StyledProps {
   isActive?: boolean;
 }
@@ -14,6 +16,11 @@ type navigateProps = NativeStackNavigationProp<StackParamList, 'TransactionScree
 export default function TransactionScreen() {
   const navigation = useNavigation<navigateProps>();
   const [typePayment, setTypePayment] = useState<'debit' | 'credit' | 'voucher'>('debit');
+  const serviceStonne = new StonneService();
+
+  function printReport() {
+    serviceStonne.sendTransaction();
+  }
 
   return (
     <Container>
@@ -42,7 +49,7 @@ export default function TransactionScreen() {
         </ButtonPayType>
       </AreaButton>
       <ButtonSendArea>
-        <ButtonSend>
+        <ButtonSend onPress={printReport} >
           <TextSend>ENVIAR TRANSAÇÃO</TextSend>
         </ButtonSend>
         <ButtonBack onPress={() => navigation.goBack()}>

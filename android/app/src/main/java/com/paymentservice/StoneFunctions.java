@@ -1,39 +1,28 @@
 package com.paymentservice;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 
 import br.com.stone.posandroid.providers.PosPrintProvider;
+import br.com.stone.posandroid.providers.PosTransactionProvider;
 import br.com.stone.posandroid.providers.PosValidateTransactionByCardProvider;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableType;
-import com.paymentservice.R;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 
 import java.util.List;
+
 import stone.application.enums.Action;
 import stone.application.interfaces.StoneActionCallback;
 import stone.application.interfaces.StoneCallbackInterface;
 import stone.database.transaction.TransactionObject;
-import stone.providers.ActiveApplicationProvider;
-import stone.providers.DisplayMessageProvider;
-import stone.providers.ReversalProvider;
-import stone.utils.Stone;
 
 public class StoneFunctions extends AppCompatActivity {
-    public void printTextSimple(Context mContext, String text) {
+    Context mContext = StoneClass.reactContext;
+
+    public void printTextSimple(String text) {
         try{
             final PosPrintProvider customPosPrintProvider = new PosPrintProvider(mContext);
             customPosPrintProvider.addLine(text);
@@ -55,7 +44,7 @@ public class StoneFunctions extends AppCompatActivity {
         }
     }
 
-    public void printTextMultline(Context mContext, ReadableArray text) {
+    public void printTextMultline(ReadableArray text) {
         try{
             final PosPrintProvider customPosPrintProvider = new PosPrintProvider(mContext);
             for (int i = 0; i < text.size(); i++) {
@@ -82,7 +71,7 @@ public class StoneFunctions extends AppCompatActivity {
         }
     }
 
-    public void validateCard(Context mContext){
+    public void validateCard(){
         try{
             final PosValidateTransactionByCardProvider posValidateTransactionByCardProvider = new PosValidateTransactionByCardProvider(mContext);
             posValidateTransactionByCardProvider.setConnectionCallback(new StoneActionCallback() {
@@ -125,6 +114,16 @@ public class StoneFunctions extends AppCompatActivity {
             posValidateTransactionByCardProvider.execute();
         }catch (Exception e){
             Toast.makeText(mContext, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void Transaction(){
+        try {
+            final PosTransaction transactionObject = new PosTransaction();
+            transactionObject.buildTransactionProvider();
+            transactionObject.initTransaction();
+        }catch (Exception e){
+            Toast.makeText(mContext, "Error: "+e.getMessage(), Toast.LENGTH_SHORT);
         }
     }
 }

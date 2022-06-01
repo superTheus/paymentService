@@ -13,4 +13,8 @@ export default class StonneService {
   sendValidateCard() {
     stonnePrint.handleValidateCard();
   }
+
+  sendTransaction() {
+    stonnePrint.handleTransaction();
+  }
 }

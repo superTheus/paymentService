@@ -85,7 +85,7 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.printTextSimple(reactContext, text);
+                    Print.printTextSimple(text);
                 }
             });
         }catch (Exception e){
@@ -100,7 +100,7 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.printTextMultline(reactContext, text);
+                    Print.printTextMultline(text);
                 }
             });
         }catch (Exception e){
@@ -115,7 +115,22 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.validateCard(reactContext);
+                    Print.validateCard();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(reactContext, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @ReactMethod
+    public void handleTransaction() {
+        try{
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final StoneFunctions Transaction = new StoneFunctions();
+                    Transaction.Transaction();
                 }
             });
         }catch (Exception e){
