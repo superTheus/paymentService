@@ -3,10 +3,12 @@ import static android.app.Activity.RESULT_OK;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -124,13 +126,13 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
     }
 
     @ReactMethod
-    public void handleTransaction() {
+    public void handleTransaction(ReadableMap objectDataTransaction, Callback callBack) {
         try{
             getCurrentActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     final StoneFunctions Transaction = new StoneFunctions();
-                    Transaction.Transaction();
+                    Transaction.Transaction(objectDataTransaction, callBack);
                 }
             });
         }catch (Exception e){

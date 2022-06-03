@@ -2,14 +2,20 @@ package com.paymentservice;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.Callback;
+
 import br.com.stone.posandroid.providers.PosTransactionProvider;
 import stone.application.enums.Action;
 import stone.application.enums.ErrorsEnum;
 import stone.application.enums.TransactionStatusEnum;
 
 public class PosTransaction extends BaseTransiction<PosTransactionProvider>{
-
     Context mContext = StoneClass.reactContext;
+    protected final Callback callback;
+
+    public PosTransaction(Callback callback){
+        this.callback = callback;
+    }
 
     @Override
     protected PosTransactionProvider buildTransactionProvider() {
@@ -21,11 +27,7 @@ public class PosTransaction extends BaseTransiction<PosTransactionProvider>{
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(
-                        mContext,
-                        "Código: " + action.hashCode() + "\n Messagem: "+ action.name(),
-                        Toast.LENGTH_LONG
-                ).show();
+                Toast.makeText(mContext, "Message: " + action.name(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -36,22 +38,14 @@ public class PosTransaction extends BaseTransiction<PosTransactionProvider>{
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(
-                            mContext,
-                            "Sucesso na Transação",
-                            Toast.LENGTH_LONG
-                    ).show();
+                    callback.invoke("Sucesso na Transação");
                 }
             });
         } else {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(
-                            mContext,
-                            "Erro na transação: \"" + getAuthorizationMessage() + "\"",
-                            Toast.LENGTH_LONG
-                    ).show();
+                    callback.invoke("Erro na transação: \"" + getAuthorizationMessage() + "\"");
                 }
             });
         }
@@ -61,11 +55,7 @@ public class PosTransaction extends BaseTransiction<PosTransactionProvider>{
     public void onError() {
         super.onError();
         if (providerHasErrorEnum(ErrorsEnum.DEVICE_NOT_COMPATIBLE)) {
-            Toast.makeText(
-                    mContext,
-                    "Dispositivo não compatível ou dependência relacionada não está presente",
-                    Toast.LENGTH_SHORT
-            ).show();
+            callback.invoke("Dispositivo não compatível ou dependência relacionada não está presente");
         }
     }
 }

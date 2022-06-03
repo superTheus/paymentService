@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import br.com.stone.posandroid.providers.PosPrintProvider;
-import br.com.stone.posandroid.providers.PosTransactionProvider;
 import br.com.stone.posandroid.providers.PosValidateTransactionByCardProvider;
 
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 
 import java.util.List;
@@ -117,11 +118,11 @@ public class StoneFunctions extends AppCompatActivity {
         }
     }
 
-    public void Transaction(){
+    public void Transaction(ReadableMap objectDataTransaction, Callback callBack){
         try {
-            final PosTransaction transactionObject = new PosTransaction();
+            final PosTransaction transactionObject = new PosTransaction(callBack);
             transactionObject.buildTransactionProvider();
-            transactionObject.initTransaction();
+            transactionObject.initTransaction(objectDataTransaction);
         }catch (Exception e){
             Toast.makeText(mContext, "Error: "+e.getMessage(), Toast.LENGTH_SHORT);
         }

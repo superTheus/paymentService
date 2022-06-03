@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReadableMap;
 
 import stone.application.enums.Action;
 import stone.application.enums.ErrorsEnum;
@@ -23,7 +24,7 @@ public abstract class BaseTransiction <T extends BaseTransactionProvider> extend
 
     Context mContext = StoneClass.reactContext;
 
-    public void initTransaction() {
+    public void initTransaction(ReadableMap objectDataTransaction) {
         // Informa a quantidade de parcelas.
         transactionObject.setInstalmentTransaction(InstalmentTransactionEnum.ONE_INSTALMENT);
 

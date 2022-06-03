@@ -6,6 +6,7 @@ import { StackParamList } from '../../routes/types';
 import colors from '../../utils/colors';
 
 import StonneService from '../../services/service_stone';
+import { Text } from 'react-native';
 
 interface StyledProps {
   isActive?: boolean;
@@ -18,8 +19,14 @@ export default function TransactionScreen() {
   const [typePayment, setTypePayment] = useState<'debit' | 'credit' | 'voucher'>('debit');
   const serviceStonne = new StonneService();
 
+  const [messageStatus, setMessageStatus] = useState('Messagem de Status');
+
+  function handerMessage(message: string) {
+    setMessageStatus(message);
+  }
+
   function printReport() {
-    serviceStonne.sendTransaction();
+    serviceStonne.sendTransaction(handerMessage);
   }
 
   return (
@@ -56,6 +63,9 @@ export default function TransactionScreen() {
           <TextBack>VOLTAR</TextBack>
         </ButtonBack>
       </ButtonSendArea>
+      <Text>
+        {messageStatus}
+      </Text>
     </Container >
   );
 }
