@@ -13,4 +13,10 @@ export default class StonneService {
   sendValidateCard() {
     stonnePrint.handleValidateCard();
   }
+
+  sendTransaction(handlerMessageStatus: (message: string) => void) {
+    stonnePrint.handleTransaction({ Name: 'Transaction' }, (message: string) => {
+      handlerMessageStatus(message);
+    });
+  }
 }

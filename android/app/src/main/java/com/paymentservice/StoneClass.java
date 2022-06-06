@@ -3,10 +3,12 @@ import static android.app.Activity.RESULT_OK;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -85,7 +87,7 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.printTextSimple(reactContext, text);
+                    Print.printTextSimple(text);
                 }
             });
         }catch (Exception e){
@@ -100,7 +102,7 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.printTextMultline(reactContext, text);
+                    Print.printTextMultline(text);
                 }
             });
         }catch (Exception e){
@@ -115,7 +117,22 @@ public class StoneClass extends ReactContextBaseJavaModule implements ActivityEv
                 @Override
                 public void run() {
                     final StoneFunctions Print = new StoneFunctions();
-                    Print.validateCard(reactContext);
+                    Print.validateCard();
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(reactContext, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @ReactMethod
+    public void handleTransaction(ReadableMap objectDataTransaction, Callback callBack) {
+        try{
+            getCurrentActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final StoneFunctions Transaction = new StoneFunctions();
+                    Transaction.Transaction(objectDataTransaction, callBack);
                 }
             });
         }catch (Exception e){
