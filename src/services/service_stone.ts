@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { TransactionInterface } from '../utils/types';
 var stonnePrint = NativeModules.StoneClass;
 
 export default class StonneService {
@@ -14,7 +15,7 @@ export default class StonneService {
     stonnePrint.handleValidateCard();
   }
 
-  sendTransaction(handlerMessageStatus: (message: string) => void) {
+  sendTransaction(handlerMessageStatus: (message: string) => void, TransactionInfo: TransactionInterface) {
     stonnePrint.handleTransaction({ Name: 'Transaction' }, (message: string) => {
       handlerMessageStatus(message);
     });

@@ -1,12 +1,16 @@
+import React, { useState } from 'react';
+import { Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
 import styled from 'styled-components/native';
+import CurrencyInput from 'react-native-currency-input';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
+
 import { StackParamList } from '../../routes/types';
 import colors from '../../utils/colors';
-
 import StonneService from '../../services/service_stone';
-import { Text } from 'react-native';
+import { TransactionInterface } from '../../utils/types';
+
 
 interface StyledProps {
   isActive?: boolean;
@@ -16,24 +20,41 @@ type navigateProps = NativeStackNavigationProp<StackParamList, 'TransactionScree
 
 export default function TransactionScreen() {
   const navigation = useNavigation<navigateProps>();
-  const [typePayment, setTypePayment] = useState<'debit' | 'credit' | 'voucher'>('debit');
+
   const serviceStonne = new StonneService();
 
-  const [messageStatus, setMessageStatus] = useState('Messagem de Status');
+  const [value, setValue] = useState<number | null>(0);
+  const [withCapture, setWithCapture] = useState(true);
+
+  const [typePayment, setTypePayment] = useState<'debit' | 'credit' | 'voucher'>('debit');
+  const [messageStatus, setMessageStatus] = useState('');
 
   function handerMessage(message: string) {
     setMessageStatus(message);
   }
 
-  function printReport() {
-    serviceStonne.sendTransaction(handerMessage);
+  function trasactionInit() {
+    const TransactionInfo: TransactionInterface = {
+      capture: withCapture,
+      value: String(value).replace(/\D/g, ''),
+      typePayment: typePayment,
+      portion: 1
+    }
+    serviceStonne.sendTransaction(handerMessage, TransactionInfo);
   }
 
   return (
     <Container>
       <AreaView>
         <TextLabel>Valor:</TextLabel>
-        <Input />
+        <Input
+          value={value}
+          onChangeValue={setValue}
+          delimiter="."
+          separator=","
+          precision={2}
+          minValue={0}
+        />
       </AreaView>
       <AreaButton>
         <ButtonPayType
@@ -55,8 +76,20 @@ export default function TransactionScreen() {
           <TextButton isActive={typePayment === 'voucher' ? true : false}>Voucher</TextButton>
         </ButtonPayType>
       </AreaButton>
+
+      <BouncyCheckbox
+        size={25}
+        isChecked={withCapture}
+        fillColor={colors.purple}
+        unfillColor="#FFFFFF"
+        text="Transação com Captura"
+        iconStyle={{ borderColor: colors.gray }}
+        textStyle={{ fontFamily: "JosefinSans-Regular" }}
+        onPress={(isChecked: boolean) => setWithCapture(isChecked)}
+      />
+
       <ButtonSendArea>
-        <ButtonSend onPress={printReport} >
+        <ButtonSend onPress={trasactionInit} >
           <TextSend>ENVIAR TRANSAÇÃO</TextSend>
         </ButtonSend>
         <ButtonBack onPress={() => navigation.goBack()}>
@@ -89,12 +122,12 @@ const TextLabel = styled.Text`
   width: 20%;
 `;
 
-const Input = styled.TextInput`
-  padding: 0px;
+const Input = styled(CurrencyInput)`
+  padding: 10px;
   margin: 0px 10px;
   border: 1px solid ${colors.purple};
   width:  243px;
-  height: 32px;
+  height: 40px;
   border-radius: 5px;
   text-align: right;
 `;
